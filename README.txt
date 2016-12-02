@@ -16,8 +16,8 @@ Dependencies:
 - wmctrl (for window management)
 
 Running:
-1. Run 'sudo xboxdrv'. For ease, run xboxdrv on system startup.
-2. Run script with 'python3 init.py'
+1. Make sure xboxdrv is running ('sudo xboxdrv'). For ease, run on system startup.
+2. Run script with 'launch.sh'
 
 Extra Tips:
 - to view all the controls available for the webcam and their setting ranges,
@@ -26,8 +26,11 @@ run 'v4l2-ctl -l'
 controller.py
 - to bring a guvcview window to the front, run:
 'wmctrl -ir 0x01c00016 -b add,maximized_vert,maximized_horz'
+- sending SIGUSR1 to guvcview starts/stops recording ('killall -SIGUSR1 guvcview')
+- to record with ffmpeg:
+'ffmpeg -f video4linux2 -r 25 -i ' + video + ' -f alsa -i ' + audio + ' -acodec aac -vcodec mpeg4 -y vid.mp4'
+(where video and audio are the devices)
 
 To do:
-- run guvcview automatically
 - use guvcview to record
 - CCWJ watermark on file

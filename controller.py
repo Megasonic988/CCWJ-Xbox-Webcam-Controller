@@ -75,7 +75,8 @@ pygame.joystick.init()
 joystick_index = 0
 runCommand('killall guvcview')
 time.sleep(0.5) # must sleep to give killall some time
-runCommand('guvcview --gui=gtk3')
+runCommand('guvcview --gui=gtk3 --audio=pulse --audio_device=0')
+
 
 def activatePreset(preset):
     if preset == 'MIG':
@@ -141,8 +142,22 @@ def handleButtonInput(buttonName, value):
     if control != None:
         runCommand('v4l2-ctl --set-ctrl ' + control.getName() + '=' + control.getValue())
 
-def startRecording(video, audio, welder, operator, process):
-    return runCommand('ffmpeg -f video4linux2 -r 25 -i ' + video + ' -f alsa -i ' + audio + ' -acodec aac -vcodec mpeg4 -y ' + welder + operator + process + '.mp4')
+def startRecording():
+    runCommand('killall -SIGUSR1 guvcview')
+
+def stopRecording(welder, operator, process):
+    runCommand('killall -SIGUSR1 guvcview')
+    time.sleep(0.5)
+    filename_items = ['CCWJ']
+    if welder:
+        filename_items.append(welder.replace(' ', ''))
+    if operator:
+        filename_items.append(operator.replace(' ', ''))
+    if process:
+        filename_items.append(process.replace(' ', ''))
+    filename_items.append(time.strftime("%b-%d-%Y"))
+    filename = '_'.join(filename_items)
+    runCommand('mv /home/clac/my_video-1.mkv ' + '/home/clac/' +filename + '.mkv')
 
 # main joystick input loop
 def controllerLoop():

@@ -2,9 +2,6 @@ from tkinter import *
 from tkinter.ttk import *
 import controller
 
-video = ''
-audio = ''
-
 class WebcamControllerApp(Frame):
 
     def __init__(self, parent):
@@ -64,13 +61,12 @@ class WebcamControllerApp(Frame):
     def startRecording(self):
         print('recording')
         self.recordButton.config(text='Stop Record', command=self.stopRecording)
-        self.recordingProcess = controller.startRecording(video, audio, self.welder, self.operator, self.process)
+        controller.startRecording()
 
     def stopRecording(self):
         print('stopped recording')
-        self.recordingProcess.kill()
         self.recordButton.config(text='Start Record', command=self.startRecording)
-
+        controller.stopRecording(self.welder.get(), self.operator.get(), self.process.get())
 
 def main():
 
