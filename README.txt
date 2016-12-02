@@ -19,7 +19,6 @@ Running:
 2. Run script with 'python3 init.py'
 
 To do:
-- remove pygame joystick interface
 - run guvcview automatically
 - use guvcview to record
 - CCWJ watermark on file

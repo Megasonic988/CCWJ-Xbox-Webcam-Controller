@@ -69,50 +69,9 @@ pan = CameraControl('pan_absolute', 0, -36000, 36000) # pan is X axis, step 3600
 tilt = CameraControl('tilt_absolute', 0, -36000, 36000) # tilt is Y axis, step 3600
 zoom = CameraControl('zoom_absolute', 1, 1, 5)
 
-BLACK = (   0,   0,   0)
-WHITE = ( 255, 255, 255)
-class TextPrint:
-    def __init__(self):
-        self.reset()
-        self.font = pygame.font.Font(None, 20)
-
-    def print(self, screen, textString):
-        textBitmap = self.font.render(textString, True, BLACK)
-        screen.blit(textBitmap, [self.x, self.y])
-        self.y += self.line_height
-
-    def reset(self):
-        self.x = 10
-        self.y = 10
-        self.line_height = 15
-
-    def indent(self):
-        self.x += 10
-
-    def unindent(self):
-        self.x -= 10
-
 pygame.init()
-size = [500, 700]
-screen = pygame.display.set_mode(size)
-pygame.display.set_caption('CCWJ Camera Controller')
-done = False
-clock = pygame.time.Clock()
 pygame.joystick.init()
-textPrint = TextPrint()
 joystick_index = 0
-
-# control = brightness
-# control.changeValue(value*0.5)
-# control = saturation
-# control.changeValue(hatValue[0]*5)
-# control = white_balance
-# runCommand('v4l2-ctl --set-ctrl white_balance_temperature_auto=0')
-# control.changeValue(hatValue[1]*200)
-# control = sharpness
-# control.changeValue(5)
-# control = gain
-# control.changeValue(5)
 
 def activatePreset(preset):
     if preset == 'MIG':
@@ -187,56 +146,28 @@ def controllerLoop():
         if event.type == pygame.QUIT:
             done=True
 
-    screen.fill(WHITE)
-    textPrint.reset()
-
     joystick_count = pygame.joystick.get_count()
 
     if joystick_count == 0:
         print('No joysticks found!')
-        return
+        exit()
 
     joystick = pygame.joystick.Joystick(joystick_index)
     joystick.init()
 
-    name = joystick.get_name()
-    textPrint.print(screen, "Joystick name: {}".format(name))
-
     axes = joystick.get_numaxes()
-    textPrint.print(screen, "Number of axes: {}".format(axes))
-
-    textPrint.indent()
     for i in range(axes):
         axisValue = joystick.get_axis(i)
         axisName = axisNameForIndex(i)
-        textPrint.print(screen, "{} Axis value: {:>6.3f}".format(axisName, axisValue))
         handleAxisInput(axisName, axisValue)
-    textPrint.unindent()
 
     buttons = joystick.get_numbuttons()
-    textPrint.print(screen, "Number of buttons: {}".format(buttons))
-
-    textPrint.indent()
     for i in range(buttons):
         button = joystick.get_button(i)
         buttonName = buttonNameForIndex(i)
-        textPrint.print(screen, "{} Button: {}".format(buttonName, button))
         handleButtonInput(buttonName, button)
-        if (buttonName == 'Guide' and button == 1):
-            done = True
-    textPrint.unindent()
 
     # Value comes back in an array.
     hats = joystick.get_numhats()
-    textPrint.print(screen, "Number of hats: {}".format(hats))
-
-    textPrint.indent()
     hat = joystick.get_hat(0)
-    textPrint.print(screen, "Hat {} value: {}".format(0, str(hat)))
     handleHatInput(hat)
-    textPrint.unindent()
-
-    pygame.display.flip()
-    clock.tick(100)
-
-# pygame.quit()
