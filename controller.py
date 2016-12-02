@@ -53,7 +53,7 @@ pygame.joystick.init()
 joystick_index = 0
 runCommand('killall guvcview')
 time.sleep(0.5) # must sleep to give killall some time
-runCommand('guvcview --gui=none --audio=pulse --audio_device=1')
+runCommand('guvcview --gui=none --audio=pulse --audio_device=0')
 time.sleep(1.2)
 runCommand('wmctrl -r "Guvcview" -b add,maximized_vert,maximized_horz')
 runCommand('wmctrl -a "CCWJ Welding Helmet Controller"')
