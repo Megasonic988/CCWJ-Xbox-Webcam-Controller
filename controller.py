@@ -1,5 +1,6 @@
 import subprocess
 import pygame
+import time
 
 def runCommand(command):
     commandArray = command.split()
@@ -72,6 +73,9 @@ zoom = CameraControl('zoom_absolute', 1, 1, 5)
 pygame.init()
 pygame.joystick.init()
 joystick_index = 0
+runCommand('killall guvcview')
+time.sleep(0.5) # must sleep to give killall some time
+runCommand('guvcview --gui=gtk3')
 
 def activatePreset(preset):
     if preset == 'MIG':

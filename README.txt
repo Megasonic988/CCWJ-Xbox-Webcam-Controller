@@ -13,10 +13,19 @@ Dependencies:
 - guvcview (for viewing the webcam output)
 - ffmpeg (for adding the logo watermark)
 - pygame (for interfacing XBOX controller and Python. Install with pip)
+- wmctrl (for window management)
 
 Running:
 1. Run 'sudo xboxdrv'. For ease, run xboxdrv on system startup.
 2. Run script with 'python3 init.py'
+
+Extra Tips:
+- to view all the controls available for the webcam and their setting ranges,
+run 'v4l2-ctl -l'
+- to run guvcview with or without a GUI, set --gui=<none/gtk3>, respectively, in
+controller.py
+- to bring a guvcview window to the front, run:
+'wmctrl -ir 0x01c00016 -b add,maximized_vert,maximized_horz'
 
 To do:
 - run guvcview automatically
