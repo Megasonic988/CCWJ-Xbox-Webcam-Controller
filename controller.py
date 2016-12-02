@@ -3,8 +3,7 @@ import pygame
 import time
 
 def runCommand(command):
-    commandArray = command.split()
-    return subprocess.Popen(commandArray)
+    subprocess.Popen(command, shell=True)
 
 class CameraControl:
     def __init__(self, name, default, min, max):
@@ -52,7 +51,10 @@ pygame.joystick.init()
 joystick_index = 0
 runCommand('killall guvcview')
 time.sleep(0.5) # must sleep to give killall some time
-runCommand('guvcview --gui=gtk3 --audio=pulse --audio_device=0')
+runCommand('guvcview --gui=none --audio=pulse --audio_device=0')
+time.sleep(1.2)
+runCommand('wmctrl -r "Guvcview" -b add,maximized_vert,maximized_horz')
+runCommand('wmctrl -a "CCWJ Welding Helmet Controller"')
 
 def buttonNameForIndex(i):
     if i == 0: return 'A'
@@ -154,9 +156,12 @@ def stopRecording(welder, operator, process):
         filename_items.append(operator.replace(' ', ''))
     if process:
         filename_items.append(process.replace(' ', ''))
-    filename_items.append(time.strftime("%b-%d-%Y"))
+    filename_items.append(time.strftime("%b-%d-%Y_%H-%M-%S"))
     filename = '_'.join(filename_items)
     runCommand('mv /home/clac/my_video-1.mkv ' + 'Output/' + filename + '.mkv')
+
+def quit():
+    runCommand('killall guvcview')
 
 # main joystick input loop
 def controllerLoop():

@@ -68,6 +68,10 @@ class WebcamControllerApp(Frame):
         self.recordButton.config(text='Start Record', command=self.startRecording)
         controller.stopRecording(self.welder.get(), self.operator.get(), self.process.get())
 
+    def quit(self):
+        controller.quit()
+        Frame.quit(self)
+
 def main():
 
     root = Tk()

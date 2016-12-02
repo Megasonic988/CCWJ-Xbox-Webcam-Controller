@@ -25,7 +25,7 @@ run 'v4l2-ctl -l'
 - to run guvcview with or without a GUI, set --gui=<none/gtk3>, respectively, in
 controller.py
 - to bring a guvcview window to the front, run:
-'wmctrl -ir 0x01c00016 -b add,maximized_vert,maximized_horz'
+'wmctrl -ir "Guvcview" -b add,maximized_vert,maximized_horz'
 - sending SIGUSR1 to guvcview starts/stops recording ('killall -SIGUSR1 guvcview')
 - to record with ffmpeg:
 'ffmpeg -f video4linux2 -r 25 -i ' + video + ' -f alsa -i ' + audio + '
