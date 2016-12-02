@@ -157,7 +157,7 @@ def stopRecording(welder, operator, process):
         filename_items.append(process.replace(' ', ''))
     filename_items.append(time.strftime("%b-%d-%Y"))
     filename = '_'.join(filename_items)
-    runCommand('mv /home/clac/my_video-1.mkv ' + '/home/clac/' +filename + '.mkv')
+    runCommand('mv /home/clac/my_video-1.mkv ' + 'Output/' + filename + '.mkv')
 
 # main joystick input loop
 def controllerLoop():
