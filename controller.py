@@ -82,7 +82,7 @@ def axisNameForIndex(i):
     else: raise ValueError("Error: invalid stick configuration")
 
 def activatePreset(preset):
-    if preset == 'MIG':runCommand('v4l2-ctl --set-ctrl=exposure_auto=1')
+    if preset == 'MIG':
 	    pass
     if preset == 'TIG':
 	    pass
@@ -141,7 +141,7 @@ def handleButtonInput(buttonName, value):
         control = exposure
         runCommand('v4l2-ctl --set-ctrl=exposure_auto=1')
         control.changeValue(-10)
-    if buttonName == 'A':runCommand('v4l2-ctl --set-ctrl=exposure_auto=1')
+    if buttonName == 'A':
         activatePreset('MIG')
     if buttonName == 'B':
         activatePreset('TIG')
@@ -149,11 +149,11 @@ def handleButtonInput(buttonName, value):
         activatePreset('Stick')
     if buttonName == 'Y':
         activatePreset('Flux Cored Wire')
-    if buttonName == 'Back':runCommand('v4l2-ctl --set-ctrl=exposure_auto=1')
+    if buttonName == 'Back':
         control = gain
         control.changeValue(-1)
     if buttonName == 'Start':
-        control = gainrunCommand('v4l2-ctl --set-ctrl=exposure_auto=1')
+        control = gain
         control.changeValue(1)
     if control != None:
         runCommand('v4l2-ctl --set-ctrl ' + control.getName() + '=' + control.getValue())
@@ -173,7 +173,7 @@ def stopRecording(welder, operator, process):
         filename_items.append(process.replace(' ', ''))
     filename_items.append(time.strftime("%b-%d-%Y_%H-%M-%S"))
     filename = '_'.join(filename_items)
-    runCommand('mv /home/clac/my_video-1.runCommand('v4l2-ctl --set-ctrl=exposure_auto=1')mkv ' + 'Output/' + filename + '.mkv')
+    runCommand('mv /home/clac/my_video-1.mkv ' + 'Output/' + filename + '.mkv')
 
 def quit():
     runCommand('killall guvcview')
