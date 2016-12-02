@@ -6,29 +6,6 @@ def runCommand(command):
     commandArray = command.split()
     return subprocess.Popen(commandArray)
 
-def buttonNameForIndex(i):
-    if i == 0: return 'A'
-    elif i == 1: return 'B'
-    elif i == 2: return 'X'
-    elif i == 3: return 'Y'
-    elif i == 4: return 'Right Bumper'
-    elif i == 5: return 'Left Bumper'
-    elif i == 6: return 'Back'
-    elif i == 7: return 'Start'
-    elif i == 8: return 'Guide'
-    elif i == 9: return 'Left Stick'
-    elif i == 10: return 'Right Stick'
-    else: raise ValueError("Error: invalid button configuration")
-
-def axisNameForIndex(i):
-    if i == 0: return 'Left Stick X'
-    elif i == 1: return 'Left Stick Y'
-    elif i == 2: return 'Right Stick X'
-    elif i == 3: return 'Right Stick Y'
-    elif i == 4: return 'Right Trigger'
-    elif i == 5: return 'Left Trigger'
-    else: raise ValueError("Error: invalid stick configuration")
-
 class CameraControl:
     def __init__(self, name, default, min, max):
         self.name = name
@@ -76,6 +53,29 @@ joystick_index = 0
 runCommand('killall guvcview')
 time.sleep(0.5) # must sleep to give killall some time
 runCommand('guvcview --gui=gtk3 --audio=pulse --audio_device=0')
+
+def buttonNameForIndex(i):
+    if i == 0: return 'A'
+    elif i == 1: return 'B'
+    elif i == 2: return 'X'
+    elif i == 3: return 'Y'
+    elif i == 4: return 'Right Bumper'
+    elif i == 5: return 'Left Bumper'
+    elif i == 6: return 'Back'
+    elif i == 7: return 'Start'
+    elif i == 8: return 'Guide'
+    elif i == 9: return 'Left Stick'
+    elif i == 10: return 'Right Stick'
+    else: raise ValueError("Error: invalid button configuration")
+
+def axisNameForIndex(i):
+    if i == 0: return 'Left Stick X'
+    elif i == 1: return 'Left Stick Y'
+    elif i == 2: return 'Right Stick X'
+    elif i == 3: return 'Right Stick Y'
+    elif i == 4: return 'Right Trigger'
+    elif i == 5: return 'Left Trigger'
+    else: raise ValueError("Error: invalid stick configuration")
 
 def activatePreset(preset):
     if preset == 'MIG':
