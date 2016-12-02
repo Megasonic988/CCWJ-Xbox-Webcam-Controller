@@ -15,9 +15,9 @@ Dependencies:
 - pygame (for interfacing XBOX controller and Python. Install with pip)
 - wmctrl (for window management)
 
-Running:
+To run:
 1. Make sure xboxdrv is running ('sudo xboxdrv'). For ease, run on system startup.
-2. Run script with 'launch.sh'
+2. Run script with './launch.sh' from terminal
 
 Extra Tips:
 - to view all the controls available for the webcam and their setting ranges,
@@ -32,5 +32,4 @@ controller.py
 (where video and audio are the devices)
 
 To do:
-- use guvcview to record
 - CCWJ watermark on file
