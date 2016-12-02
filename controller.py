@@ -5,7 +5,7 @@ def runCommand(command):
     commandArray = command.split()
     return subprocess.Popen(commandArray)
 
-def buttonNameForIndex(index):
+def buttonNameForIndex(i):
     if i == 0: return 'A'
     elif i == 1: return 'B'
     elif i == 2: return 'X'
@@ -19,7 +19,7 @@ def buttonNameForIndex(index):
     elif i == 10: return 'Right Stick'
     else: raise ValueError("Error: invalid button configuration")
 
-def axisNameForIndex(index):
+def axisNameForIndex(i):
     if i == 0: return 'Left Stick X'
     elif i == 1: return 'Left Stick Y'
     elif i == 2: return 'Right Stick X'
@@ -100,7 +100,7 @@ done = False
 clock = pygame.time.Clock()
 pygame.joystick.init()
 textPrint = TextPrint()
-joystick_index = 4
+joystick_index = 0
 
 # control = brightness
 # control.changeValue(value*0.5)
