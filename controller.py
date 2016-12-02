@@ -3,6 +3,7 @@ import pygame
 import time
 
 def runCommand(command):
+    print(command)
     subprocess.Popen(command, shell=True)
 
 class CameraControl:
@@ -36,15 +37,16 @@ class CameraControl:
 
 '''Controls: CameraControl(name, default, min, max)'''
 brightness = CameraControl('brightness', 128, 0, 255)
-contrast = CameraControl('contrast', 32, 0, 255)
-saturation = CameraControl('saturation', 34, 0, 255)
-gain = CameraControl('gain', 64, 0, 255)
-white_balance = CameraControl('white_balance_temperature', 4000, 2800, 6500)
-sharpness = CameraControl('sharpness', 22, 0, 255)
-exposure = CameraControl('exposure_absolute', 166, 3, 2047)
+contrast = CameraControl('contrast', 128, 0, 255)
+saturation = CameraControl('saturation', 128, 0, 255)
+gain = CameraControl('gain', 0, 0, 255)
+white_balance = CameraControl('white_balance_temperature', 4000, 2000, 7500)
+sharpness = CameraControl('sharpness', 128, 0, 255)
+exposure = CameraControl('exposure_absolute', 250, 3, 2047)
 pan = CameraControl('pan_absolute', 0, -36000, 36000) # pan is X axis, step 3600
 tilt = CameraControl('tilt_absolute', 0, -36000, 36000) # tilt is Y axis, step 3600
-zoom = CameraControl('zoom_absolute', 1, 1, 5)
+zoom = CameraControl('zoom_absolute', 0, 0, 255)
+focus = CameraControl('focus_absolute', 0, 0, 255)
 
 pygame.init()
 pygame.joystick.init()
@@ -92,27 +94,32 @@ def activatePreset(preset):
 def handleAxisInput(axisName, value):
     control = None
     if axisName == 'Left Stick X' and abs(value) > 0.2:
-        pass
-    if axisName == 'Left Stick Y' and abs(value) > 0.2:
-        control = zoom
-        control.changeValue(-0.1)
-    if axisName == 'Left Trigger' and value > 0.7:
-        pass
-    if axisName == 'Right Trigger' and value > 0.7:
-        pass
-    if axisName == 'Right Stick X' and abs(value) > 0.5:
         control = pan
-        control.changeValue(value*10000)
-    if axisName == 'Right Stick Y' and abs(value) > 0.5:
+        control.changeValue(value*2000)
+    if axisName == 'Left Stick Y' and abs(value) > 0.2:
         control = tilt
-        control.changeValue(value*10000)
+        control.changeValue(value*-2000)
+    if axisName == 'Left Trigger' and value > 0.7:
+        control = focus
+        control.changeValue(-2)
+        runCommand('v4l2-ctl --set-ctrl=focus_auto=0')
+    if axisName == 'Right Trigger' and value > 0.7:
+        control = focus
+        control.changeValue(2)
+        runCommand('v4l2-ctl --set-ctrl=focus_auto=0')
+    if axisName == 'Right Stick X' and abs(value) > 0.5:
+        control = zoom
+        control.changeValue(value*1)
+    if axisName == 'Right Stick Y' and abs(value) > 0.5:
+        control = zoom
+        control.changeValue(value*-1)
     if control != None:
         runCommand('v4l2-ctl --set-ctrl ' + control.getName() + '=' + control.getValue())
 
 def handleHatInput(hatValue):
     control = None
     if hatValue[0] == -1 or hatValue[0] == 1: #X axis
-        control = contrast
+        control = exposure
         control.changeValue(hatValue[0]*0.5)
     if hatValue[1] == -1 or hatValue[1] == 1: #Y axis
         control = brightness
@@ -127,11 +134,11 @@ def handleButtonInput(buttonName, value):
     if buttonName == 'Left Bumper':
         control = exposure
         runCommand('v4l2-ctl --set-ctrl exposure_auto=1')
-        control.changeValue(50)
+        control.changeValue(10)
     if buttonName == 'Right Bumper':
         control = exposure
         runCommand('v4l2-ctl --set-ctrl exposure_auto=1')
-        control.changeValue(-50)
+        control.changeValue(-10)
     if buttonName == 'A':
         activatePreset('MIG')
     if buttonName == 'B':
@@ -140,6 +147,12 @@ def handleButtonInput(buttonName, value):
         activatePreset('Stick')
     if buttonName == 'Y':
         activatePreset('Flux Cored Wire')
+    if buttonName == 'Back':
+        control = gain
+        control.changeValue(-1)
+    if buttonName == 'Start':
+        control = gain
+        control.changeValue(1)
     if control != None:
         runCommand('v4l2-ctl --set-ctrl ' + control.getName() + '=' + control.getValue())
 
