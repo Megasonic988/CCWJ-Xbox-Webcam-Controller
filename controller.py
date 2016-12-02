@@ -77,7 +77,6 @@ runCommand('killall guvcview')
 time.sleep(0.5) # must sleep to give killall some time
 runCommand('guvcview --gui=gtk3 --audio=pulse --audio_device=0')
 
-
 def activatePreset(preset):
     if preset == 'MIG':
 	    pass

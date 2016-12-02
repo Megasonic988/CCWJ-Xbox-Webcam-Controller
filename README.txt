@@ -28,8 +28,12 @@ controller.py
 'wmctrl -ir 0x01c00016 -b add,maximized_vert,maximized_horz'
 - sending SIGUSR1 to guvcview starts/stops recording ('killall -SIGUSR1 guvcview')
 - to record with ffmpeg:
-'ffmpeg -f video4linux2 -r 25 -i ' + video + ' -f alsa -i ' + audio + ' -acodec aac -vcodec mpeg4 -y vid.mp4'
-(where video and audio are the devices)
+'ffmpeg -f video4linux2 -r 25 -i ' + video + ' -f alsa -i ' + audio + '
+-acodec aac -vcodec mpeg4 -y vid.mp4' (where video and audio are the devices)
+
+Code Description:
+- init.py: starts tkinter GUI and runs the controller loop
+- controller.py: parses XBOX controller inputs, sets webcam settings accordingly
 
 To do:
 - CCWJ watermark on file
