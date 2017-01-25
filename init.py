@@ -85,7 +85,5 @@ def main():
     root.after(0, controllerLoop)
     root.mainloop()
 
-
-
 if __name__ == '__main__':
     main()

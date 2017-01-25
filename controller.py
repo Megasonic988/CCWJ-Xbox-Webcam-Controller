@@ -48,15 +48,29 @@ tilt = CameraControl('tilt_absolute', 0, -36000, 36000) # tilt is Y axis, step 3
 zoom = CameraControl('zoom_absolute', 0, 0, 255)
 focus = CameraControl('focus_absolute', 0, 0, 255)
 
+def saveControls(filename):
+    with open(filename + '.txt', 'w') as file:
+        file.write(brightness.getName() + ': ' + brightness.getValue() + '\n')
+        file.write(contrast.getName() + ': ' + contrast.getValue() + '\n')
+        file.write(saturation.getName() + ': ' + saturation.getValue() + '\n')
+        file.write(gain.getName() + ': ' + gain.getValue() + '\n')
+        file.write(white_balance.getName() + ': ' + white_balance.getValue() + '\n')
+        file.write(sharpness.getName() + ': ' + sharpness.getValue() + '\n')
+        file.write(exposure.getName() + ': ' + exposure.getValue() + '\n')
+        file.write(pan.getName() + ': ' + pan.getValue() + '\n')
+        file.write(tilt.getName() + ': ' + tilt.getValue() + '\n')
+        file.write(zoom.getName() + ': ' + zoom.getValue() + '\n')
+        file.write(focus.getName() + ': ' + focus.getValue() + '\n')
+
 pygame.init()
 pygame.joystick.init()
 joystick_index = 0
 runCommand('killall guvcview')
 time.sleep(0.5) # must sleep to give killall some time
-runCommand('guvcview --gui=none --audio=pulse --audio_device=0')
+runCommand('guvcview --gui=gtk3 --audio=pulse --audio_device=0')
 time.sleep(1.2)
 runCommand('wmctrl -r "Guvcview" -b add,maximized_vert,maximized_horz')
-runCommand('wmctrl -a "CCWJ Welding Helmet Controller"')
+runCommand('wmctrl -a "CLAC Welding Helmet Controller"')
 
 def buttonNameForIndex(i):
     if i == 0: return 'A'
@@ -164,7 +178,7 @@ def startRecording():
 def stopRecording(welder, operator, process):
     runCommand('killall -SIGUSR1 guvcview')
     time.sleep(0.5)
-    filename_items = ['CCWJ']
+    filename_items = ['CLAC']
     if welder:
         filename_items.append(welder.replace(' ', ''))
     if operator:
@@ -173,7 +187,8 @@ def stopRecording(welder, operator, process):
         filename_items.append(process.replace(' ', ''))
     filename_items.append(time.strftime("%b-%d-%Y_%H-%M-%S"))
     filename = '_'.join(filename_items)
-    runCommand('mv /home/clac/my_video-1.mkv ' + 'Output/' + filename + '.mkv')
+    runCommand('mv /home/clac/my_video-1.mkv ' + '/home/clac/Videos/Helmet/' + filename + '.mkv')
+    saveControls('/home/clac/Videos/Helmet/' + filename + '_Settings')
 
 def quit():
     runCommand('killall guvcview')
